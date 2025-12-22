@@ -393,7 +393,7 @@ MonoBehaviour:
     - 0
     - 0
   - TilePos: {x: 11, y: 1, z: -12}
-    Id: d594c5141a1f6b3478d828b8f11f6071
+    Id: f17cb06c20171e24e87cce009526b4e7
     PrefabIndex: 0
     MovableArea: 1
     SideHeight:
@@ -1999,7 +1999,7 @@ MonoBehaviour:
     - 0
     - 0
   - TilePos: {x: 14, y: -1, z: -13}
-    Id: d594c5141a1f6b3478d828b8f11f6071
+    Id: f17cb06c20171e24e87cce009526b4e7
     PrefabIndex: 0
     MovableArea: 1
     SideHeight:
@@ -2010,7 +2010,7 @@ MonoBehaviour:
     - 0
     - 0
   - TilePos: {x: 13, y: 0, z: -13}
-    Id: d594c5141a1f6b3478d828b8f11f6071
+    Id: f17cb06c20171e24e87cce009526b4e7
     PrefabIndex: 0
     MovableArea: 1
     SideHeight:
@@ -2021,7 +2021,7 @@ MonoBehaviour:
     - 0
     - 0
   - TilePos: {x: 12, y: 1, z: -13}
-    Id: d594c5141a1f6b3478d828b8f11f6071
+    Id: c92f7d6d64a5a5c46977a430297cae9a
     PrefabIndex: 0
     MovableArea: 1
     SideHeight:
