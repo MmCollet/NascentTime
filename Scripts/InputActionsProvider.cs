@@ -25,4 +25,16 @@ public class InputActionsProvider : MonoBehaviour
 
     public static bool GridToggleReleased =>
         Actions.UI.ToggleGrid.WasReleasedThisFrame();
+    
+    /// <summary>
+    /// Raw zoom delta for this frame
+    /// </summary>
+    public static float ZoomDelta =>
+        Actions.Player.Zoom.ReadValue<float>();
+
+    /// <summary>
+    /// True if zoom was used this frame
+    /// </summary>
+    public static bool IsZooming =>
+        Mathf.Abs(ZoomDelta) > 0.001f;
 }
