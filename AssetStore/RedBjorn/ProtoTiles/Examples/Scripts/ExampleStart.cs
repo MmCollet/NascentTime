@@ -51,7 +51,7 @@ namespace RedBjorn.ProtoTiles.Example
 
         void Update()
         {
-            if (Input.GetKeyUp(GridToggle))
+            if (InputActionsProvider.GridToggleReleased)
             {
                 MapEntity.GridToggle();
             }

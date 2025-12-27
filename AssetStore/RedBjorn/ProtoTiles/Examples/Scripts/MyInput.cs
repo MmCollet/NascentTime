@@ -19,7 +19,7 @@ namespace RedBjorn.ProtoTiles.Example
             {
                 LastFrame.Frame = Time.frameCount;
                 RaycastHit hit;
-                if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, 100f))
+                if (Physics.Raycast(Camera.main.ScreenPointToRay(InputActionsProvider.PointerPosition), out hit, 100f))
                 {
                     LastFrame.OverObject = hit.collider.gameObject;
                 }
@@ -43,13 +43,13 @@ namespace RedBjorn.ProtoTiles.Example
         public static bool GetOnWorldDownFree(Plane plane)
         {
             Validate(plane);
-            return Input.GetMouseButtonDown(0);
+            return InputActionsProvider.LeftClickPressedThisFrame;
         }
 
         public static bool GetOnWorldUpFree(Plane plane)
         {
             Validate(plane);
-            return Input.GetMouseButtonUp(0);
+            return InputActionsProvider.LeftClickReleasedThisFrame;
         }
 
         public static bool GetOnWorldUp(Plane plane)
@@ -61,7 +61,7 @@ namespace RedBjorn.ProtoTiles.Example
         public static bool GetOnWorldFree(Plane plane)
         {
             Validate(plane);
-            return Input.GetMouseButton(0);
+            return InputActionsProvider.LeftClickIsPressed;
         }
 
         public static Vector3 CameraGroundPosition(Plane plane)
@@ -72,7 +72,7 @@ namespace RedBjorn.ProtoTiles.Example
 
         public static Vector3 GroundPosition(Plane plane)
         {
-            var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            var mouseRay = Camera.main.ScreenPointToRay(InputActionsProvider.PointerPosition);
             float enter = 0f;
             if (plane.Raycast(mouseRay, out enter))
             {
@@ -83,7 +83,7 @@ namespace RedBjorn.ProtoTiles.Example
 
         public static Vector3 GroundPositionCameraOffset(Plane plane)
         {
-            var mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+            var mouseRay = Camera.main.ScreenPointToRay(InputActionsProvider.PointerPosition);
             float enter = 0f;
             if (plane.Raycast(mouseRay, out enter))
             {
