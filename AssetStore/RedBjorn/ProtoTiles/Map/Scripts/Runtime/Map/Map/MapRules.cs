@@ -10,5 +10,8 @@ namespace RedBjorn.ProtoTiles
         /// Rules which should be filled for movable tiles
         /// </summary>
         public TileCondition IsMovable;
+        public TileCondition IsWaterTile;
+        public TileCondition IsForrestTile;
+        public TileCondition IsHillTile;
     }
 }

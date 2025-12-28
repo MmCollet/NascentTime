@@ -13,5 +13,6 @@ namespace RedBjorn.ProtoTiles
         float Depth { get; set; }
         bool Visited { get; set; }
         bool Considered { get; set; }
+        float Weight { get; }
     }
 }

@@ -15,6 +15,7 @@ public class UnitController : MonoBehaviour
     public PathDrawer PathPrefab;
 
 
+    float mobility = 10f;
     bool isSelected = false;
     MapEntity Map;
     AreaOutline Area;

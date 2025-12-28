@@ -56,6 +56,20 @@ namespace RedBjorn.ProtoTiles
         public float[] NeighbourMovable { get { return Data == null ? null : Data.SideHeight; } }
         public Vector3Int Position { get { return Data == null ? Vector3Int.zero : Data.TilePos; } }
 
+        public float Weight
+        { 
+            get 
+            {
+                if (Rules == null || Rules.IsWaterTile == null) return 1;
+                if (Rules.IsWaterTile.IsMet(this)) return float.MaxValue;
+                if (Rules.IsForrestTile.IsMet(this)) return 2;
+                if (Rules.IsHillTile.IsMet(this)) return 2;
+                // Other types...
+                
+                return 1;
+            } 
+        }
+
         TileEntity() { }
 
         public TileEntity(TileData preset, TilePreset type, MapRules rules)

@@ -53,7 +53,7 @@ namespace RedBjorn.ProtoTiles
                 current.Considered = true;
                 foreach (var n in map.NeighborsMovable(current).Where(neigh => neigh != null))
                 {
-                    var currentDistance = current.Depth + map.Distance(current, n);
+                    var currentDistance = current.Depth + map.Distance(current, n) * n.Weight;
                     if (n.Vacant && !n.Considered && currentDistance <= range)
                     {
                         n.Considered = true;
@@ -84,7 +84,7 @@ namespace RedBjorn.ProtoTiles
                 current.Considered = true;
                 foreach (var n in map.NeighborsMovable(current).Where(neigh => neigh != null))
                 {
-                    var currentDistance = current.Depth + map.Distance(current, n);
+                    var currentDistance = current.Depth + map.Distance(current, n) * n.Weight;
                     if (n.Vacant && !n.Considered && currentDistance <= range)
                     {
                         n.Considered = true;
@@ -191,7 +191,7 @@ namespace RedBjorn.ProtoTiles
             int trimIndex = -1;
             for (int i = 0; i < path.Count - 1; i++)
             {
-                var step = distance + map.Distance(path[i], path[i + 1]);
+                var step = distance + map.Distance(path[i], path[i + 1]) * path[i + 1].Weight;
                 if (step <= range)
                 {
                     distance = step;
