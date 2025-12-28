@@ -25,6 +25,31 @@ namespace RedBjorn.ProtoTiles
             }
         }
 
+        public bool Empty
+        {
+            get
+            {
+                if (Data == null) return true;
+                return Data.Unit == null;
+            }
+        }
+
+        public UnitController Unit
+        {
+            get
+            {
+                if (Data == null) return null;
+                return Data.Unit;
+            }
+            set
+            {
+                if (Data != null)
+                {
+                    Data.Unit = value;
+                }
+            }
+        }
+
         public bool Visited { get; set; }
         public bool Considered { get; set; }
         public float Depth { get; set; }

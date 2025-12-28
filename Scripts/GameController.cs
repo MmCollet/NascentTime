@@ -1,3 +1,4 @@
+using System;
 using RedBjorn.ProtoTiles;
 using RedBjorn.ProtoTiles.Example;
 using UnityEngine;
@@ -7,7 +8,7 @@ public class GameController : MonoBehaviour
     public MapSettings Map;
     public KeyCode GridToggle = KeyCode.G;
     public MapView MapView;
-    public UnitMove Unit;
+    public UnitController Unit;
 
     public MapEntity MapEntity { get; private set; }
 
@@ -30,6 +31,16 @@ public class GameController : MonoBehaviour
         {
             Debug.Log("Can't find MapView. Random errors can occur");
         }
+
+        UnitController[] allUnits = new UnitController[0];
+
+#if UNITY_2023_1_OR_NEWER
+        allUnits = FindObjectsByType<UnitController>(FindObjectsSortMode.None);
+#else
+        allUnits = FindObjectsOfType<UnitMove>();
+#endif
+
+        Array.ForEach(allUnits, unit => {}); //TODO : init all units
     }
 
     void Update()
@@ -37,6 +48,28 @@ public class GameController : MonoBehaviour
         if (InputActionsProvider.GridToggleReleased)
         {
             MapEntity.GridToggle();
+        }
+
+        if (MyInput.GetOnWorldUp(Map.Plane()))
+        {
+            HandleWorldClick();
+        }
+    }
+
+    void HandleWorldClick()
+    {
+        var clickPos = MyInput.GroundPosition(Map.Plane());
+        var tile = MapEntity.Tile(clickPos);
+        if (tile != null && tile.Vacant)
+        {
+            if (tile.Empty && Unit == null)
+            {
+                // select tile
+            } else if (!tile.Empty)
+            {
+                Unit = tile.Unit;
+                Unit.Select();
+            }
         }
     }
 }
