@@ -22,8 +22,6 @@ public class UnitController : MonoBehaviour
     PathDrawer Path;
     Coroutine MovingCoroutine;
 
-    void Start() {}
-
     void Update()
     {
         if (isSelected)
@@ -89,6 +87,7 @@ public class UnitController : MonoBehaviour
 
         while (nextIndex < path.Count)
         {
+            if (nextIndex != 0) Range-=path[nextIndex].Weight;
             var targetPoint = Map.WorldPosition(path[nextIndex]);
             var stepDir = (targetPoint - transform.position) * Speed;
             if (Map.RotationType == RotationType.LookAt)
