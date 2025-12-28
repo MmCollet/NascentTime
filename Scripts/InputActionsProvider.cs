@@ -11,8 +11,14 @@ public class InputActionsProvider : MonoBehaviour
         Actions.Enable();
     }
 
+    public static Vector2 MainMoveDelta => 
+        Actions.Player.Move.ReadValue<Vector2>();
+
     public static Vector2 PointerPosition =>
         Actions.Player.Point.ReadValue<Vector2>();
+    
+    public static Vector2 PointerDelta =>
+        Actions.Player.DragDelta.ReadValue<Vector2>();
 
     public static bool LeftClickPressedThisFrame =>
         Actions.Player.Click.WasPressedThisFrame();
@@ -22,6 +28,9 @@ public class InputActionsProvider : MonoBehaviour
 
     public static bool LeftClickIsPressed =>
         Actions.Player.Click.IsPressed();
+
+    public static bool RightClickIsPressed =>
+        Actions.Player.SecondaryClick.IsPressed();
 
     public static bool GridToggleReleased =>
         Actions.UI.ToggleGrid.WasReleasedThisFrame();
@@ -37,4 +46,7 @@ public class InputActionsProvider : MonoBehaviour
     /// </summary>
     public static bool IsZooming =>
         Mathf.Abs(ZoomDelta) > 0.001f;
+
+    public static bool IsMainMovementActive =>
+        MainMoveDelta.magnitude > 0.01f;
 }

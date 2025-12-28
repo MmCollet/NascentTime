@@ -8,6 +8,8 @@ public class CameraController : MonoBehaviour
     float zoomSpeed = 0.05f;
     float minCameraHeight = 5;
     float maxCameraHeight = 20;
+    float cameraMoveSpeed = 5; // Could be replaced by an exponential speed
+    float dragSpeed = 0.02f;
 
 
     void Start()
@@ -25,6 +27,19 @@ public class CameraController : MonoBehaviour
 
             float cameraHeight = minCameraHeight + (maxCameraHeight-minCameraHeight) * (1-zoomFactor);
             transform.position = new(transform.position.x, cameraHeight, transform.position.z);
+        }
+
+        if (InputActionsProvider.IsMainMovementActive)
+        {
+            Vector2 direction = InputActionsProvider.MainMoveDelta;
+            Vector3 delta = cameraMoveSpeed * Time.deltaTime * new Vector3(direction.x, 0, direction.y);
+            transform.position += delta;
+        }
+        if (InputActionsProvider.RightClickIsPressed)
+        {
+            Vector2 direction = InputActionsProvider.PointerDelta;
+            Vector3 delta = dragSpeed * new Vector3(-direction.x, 0, -direction.y);
+            transform.position += delta;
         }
     }
 }

@@ -199,6 +199,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""SecondaryClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""db0504eb-a4f8-4420-b0d5-24e422a549cd"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DragDelta"",
+                    ""type"": ""Value"",
+                    ""id"": ""afd72fcd-a81f-4736-beeb-70405688319d"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -617,6 +635,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e4836ccb-2954-4c9f-ac09-cf2adf4f0aba"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""SecondaryClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""bcf74b4e-499b-47e3-8c6b-811559e7f3d3"",
+                    ""path"": ""<Pointer>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""DragDelta"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1236,6 +1276,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Point = m_Player.FindAction("Point", throwIfNotFound: true);
         m_Player_Click = m_Player.FindAction("Click", throwIfNotFound: true);
         m_Player_Zoom = m_Player.FindAction("Zoom", throwIfNotFound: true);
+        m_Player_SecondaryClick = m_Player.FindAction("SecondaryClick", throwIfNotFound: true);
+        m_Player_DragDelta = m_Player.FindAction("DragDelta", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1342,6 +1384,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Point;
     private readonly InputAction m_Player_Click;
     private readonly InputAction m_Player_Zoom;
+    private readonly InputAction m_Player_SecondaryClick;
+    private readonly InputAction m_Player_DragDelta;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -1401,6 +1445,14 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Zoom".
         /// </summary>
         public InputAction @Zoom => m_Wrapper.m_Player_Zoom;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/SecondaryClick".
+        /// </summary>
+        public InputAction @SecondaryClick => m_Wrapper.m_Player_SecondaryClick;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/DragDelta".
+        /// </summary>
+        public InputAction @DragDelta => m_Wrapper.m_Player_DragDelta;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1463,6 +1515,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Zoom.started += instance.OnZoom;
             @Zoom.performed += instance.OnZoom;
             @Zoom.canceled += instance.OnZoom;
+            @SecondaryClick.started += instance.OnSecondaryClick;
+            @SecondaryClick.performed += instance.OnSecondaryClick;
+            @SecondaryClick.canceled += instance.OnSecondaryClick;
+            @DragDelta.started += instance.OnDragDelta;
+            @DragDelta.performed += instance.OnDragDelta;
+            @DragDelta.canceled += instance.OnDragDelta;
         }
 
         /// <summary>
@@ -1510,6 +1568,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Zoom.started -= instance.OnZoom;
             @Zoom.performed -= instance.OnZoom;
             @Zoom.canceled -= instance.OnZoom;
+            @SecondaryClick.started -= instance.OnSecondaryClick;
+            @SecondaryClick.performed -= instance.OnSecondaryClick;
+            @SecondaryClick.canceled -= instance.OnSecondaryClick;
+            @DragDelta.started -= instance.OnDragDelta;
+            @DragDelta.performed -= instance.OnDragDelta;
+            @DragDelta.canceled -= instance.OnDragDelta;
         }
 
         /// <summary>
@@ -1905,6 +1969,20 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnZoom(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SecondaryClick" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSecondaryClick(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "DragDelta" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDragDelta(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.
