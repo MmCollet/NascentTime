@@ -37,10 +37,10 @@ public class GameController : MonoBehaviour
 #if UNITY_2023_1_OR_NEWER
         allUnits = FindObjectsByType<UnitController>(FindObjectsSortMode.None);
 #else
-        allUnits = FindObjectsOfType<UnitMove>();
+        allUnits = FindObjectsOfType<UnitController>();
 #endif
 
-        Array.ForEach(allUnits, unit => {}); //TODO : init all units
+        Array.ForEach(allUnits, unit => unit.Init(MapEntity));
     }
 
     void Update()
