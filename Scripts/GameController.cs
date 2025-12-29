@@ -32,6 +32,8 @@ public class GameController : MonoBehaviour
             Debug.Log("Can't find MapView. Random errors can occur");
         }
 
+        FindFirstObjectByType<CameraController>().Init(Map);
+
         UnitController[] allUnits = new UnitController[0];
 
 #if UNITY_2023_1_OR_NEWER

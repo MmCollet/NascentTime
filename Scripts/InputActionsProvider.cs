@@ -29,6 +29,12 @@ public class InputActionsProvider : MonoBehaviour
     public static bool LeftClickIsPressed =>
         Actions.Player.Click.IsPressed();
 
+    public static bool RightClickPressedThisFrame =>
+        Actions.Player.SecondaryClick.WasPressedThisFrame();
+
+    public static bool RightClickReleasedThisFrame =>
+        Actions.Player.SecondaryClick.WasReleasedThisFrame();
+
     public static bool RightClickIsPressed =>
         Actions.Player.SecondaryClick.IsPressed();
 
