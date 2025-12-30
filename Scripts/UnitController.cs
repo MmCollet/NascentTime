@@ -147,7 +147,7 @@ public class UnitController : MonoBehaviour
         if (Path && Path.IsEnabled)
         {
             var tile = Map.Tile(MyInput.GroundPosition(Map.Settings.Plane()));
-            if (tile != null && tile.Vacant)
+            if (tile != null && tile.Vacant && tile.Weight != float.MaxValue)
             {
                 var path = Map.PathPoints(transform.position, Map.WorldPosition(tile.Position), Range);
                 Path.Show(path, Map);
