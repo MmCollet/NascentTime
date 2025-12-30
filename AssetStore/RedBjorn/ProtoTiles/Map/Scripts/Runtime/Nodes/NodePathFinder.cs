@@ -161,6 +161,10 @@ namespace RedBjorn.ProtoTiles
 
         static List<INode> FindPath(IMapNode map, INode start, INode finish)
         {
+            // Avoid calculation for unreachable tiles
+            if (!finish.Vacant || finish.Weight == float.MaxValue || finish.MovableArea != start.MovableArea) 
+                return new List<INode>();
+
             map.Reset();
             start.Depth = 0f;
 
@@ -179,6 +183,7 @@ namespace RedBjorn.ProtoTiles
                         var distance = current.Depth + map.Distance(current, n) * n.Weight;
                         if (n.Vacant && !n.Visited && distance < n.Depth)
                         {
+                            n.Considered = true;
                             n.Depth = distance;
                             int intDistance = Mathf.CeilToInt(distance);
 
