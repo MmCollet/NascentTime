@@ -49,7 +49,7 @@ namespace RedBjorn.ProtoTiles
             var closed = new HashSet<INode>();
 
             var index = 0;
-            while (open.Count > 0 && index < 100000)
+            while (open.Any() && index < 100000)
             {
                 open.ForEach(current =>
                 {
@@ -84,7 +84,7 @@ namespace RedBjorn.ProtoTiles
                     open = enumerator.Current.Value;
                     open.RemoveAll(n => Mathf.CeilToInt(n.Depth) != smallestKey);
                     reachable.Remove(smallestKey);
-                    if (open.Count > 0) break;
+                    if (open.Any()) break;
                 }
             }
             return closed;
@@ -161,65 +161,61 @@ namespace RedBjorn.ProtoTiles
 
         static List<INode> FindPath(IMapNode map, INode start, INode finish)
         {
-            ScoreG.Clear();
-            ScoreF.Clear();
-            CameFrom.Clear();
+            map.Reset();
+            start.Depth = 0f;
 
-            var path = new List<INode>();
-            if (!finish.Vacant)
+            var open = new List<(INode, INode)> { (start, null) };
+            var reachable = new SortedDictionary<int, List<(INode, INode)>>();
+            var closed = new Dictionary<INode, INode>();
+
+            var index = 0;
+            while (open.Any() && !closed.ContainsKey(finish) && index < 100000)
             {
-                return path;
-            }
-            var open = new List<INode>();
-            var closed = new List<INode>();
-            open.Add(start);
-            ScoreF[start] = map.Distance(start, finish);
-            ScoreG[start] = 0;
-
-            while (open.Any())
-            {
-                var check = open.OrderBy(o => ScoreF[o]).First();
-                if (check == finish)
+                open.ForEach(pair =>
                 {
-                    break;
-                }
-                else if (closed.Contains(check))
-                {
-                    continue;
-                }
-
-                closed.Add(check);
-                open.Remove(check);
-                foreach (var node in map.NeighborsMovable(check).Where(n => n.Vacant))
-                {
-                    var currengScoreG = ScoreG[check] + map.Distance(node, finish);
-                    var gN = -1f;
-                    if (ScoreG.TryGetValue(node, out gN))
+                    var current = pair.Item1;
+                    foreach (var n in map.NeighborsMovable(current).Where(neigh => neigh != null))
                     {
-                        if (currengScoreG < gN)
+                        var distance = current.Depth + map.Distance(current, n) * n.Weight;
+                        if (n.Vacant && !n.Visited && distance < n.Depth)
                         {
-                            CameFrom[node] = check;
-                            ScoreG[node] = currengScoreG;
-                            ScoreF[node] = currengScoreG + map.Distance(node, finish);
-                            CameFrom[node] = check;
+                            n.Depth = distance;
+                            int intDistance = Mathf.CeilToInt(distance);
+
+                            if (reachable.TryGetValue(intDistance, out List<(INode, INode)> list))
+                            {
+                                list.Add((n, current));
+                            } else
+                            {
+                                reachable.Add(intDistance, new List<(INode, INode)> { (n, current) });
+                            }
                         }
                     }
-                    else
-                    {
-                        open.Add(node);
-                        ScoreG[node] = currengScoreG;
-                        ScoreF[node] = currengScoreG + map.Distance(node, finish);
-                        CameFrom[node] = check;
-                    }
+
+                    current.Visited = true;
+                    closed.Add(current, pair.Item2);
+                    index++;
+                });
+
+                using var enumerator = reachable.GetEnumerator();
+                open.Clear();
+                while (enumerator.MoveNext())
+                {
+                    var smallestKey = enumerator.Current.Key;
+                    open = enumerator.Current.Value;
+                    open.RemoveAll(n => Mathf.CeilToInt(n.Item1.Depth) != smallestKey);
+                    reachable.Remove(smallestKey);
+                    if (open.Any()) break;
                 }
             }
+
             var current = finish;
-            while (CameFrom.ContainsKey(current))
+            var path = new List<INode>();
+            while (current != null && closed.TryGetValue(current, out INode previous))
             {
                 path.Add(current);
-                current = CameFrom[current];
+                current = previous;
             }
-            path.Add(start);
             path.Reverse();
 
             return path;
