@@ -6,6 +6,7 @@ using RedBjorn.ProtoTiles;
 using RedBjorn.ProtoTiles.Example;
 using RedBjorn.Utils;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class UnitController : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class UnitController : MonoBehaviour
     PathDrawer Path;
     Coroutine MovingCoroutine;
     Action Unselect;
+    TileEntity PreviousTile;
 
     void Update()
     {
@@ -167,6 +169,11 @@ public class UnitController : MonoBehaviour
         if (Path && Path.IsEnabled)
         {
             var tile = Map.Tile(MyInput.GroundPosition(Map.Settings.Plane()));
+            if (PreviousTile != tile)
+            {
+                NodePathFinder.ComputeNewPath(Map, Map.Tile(transform.position), tile);
+            }
+
             if (tile != null && tile.Vacant && tile.Weight != float.MaxValue)
             {
                 var path = Map.PathPoints(transform.position, Map.WorldPosition(tile.Position), Range);
@@ -179,6 +186,8 @@ public class UnitController : MonoBehaviour
                 Path.InactiveState();
                 Area.InactiveState();
             }
+
+            PreviousTile = tile;
         }
     }
 
@@ -188,6 +197,7 @@ public class UnitController : MonoBehaviour
         StartCoroutine(RunAtEndOfFrame(() =>
         {
             isSelected = true;
+            PreviousTile = null;
             Path.IsEnabled = true;
             PathUpdate();
             AreaShow();
