@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using RedBjorn.ProtoTiles;
 using RedBjorn.ProtoTiles.Example;
 using RedBjorn.Utils;
@@ -21,6 +22,7 @@ public class UnitController : MonoBehaviour
     AreaOutline Area;
     PathDrawer Path;
     Coroutine MovingCoroutine;
+    Action Unselect;
 
     void Update()
     {
@@ -34,8 +36,9 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    public void Init(MapEntity map)
+    public void Init(MapEntity map, Action unselectHandler)
     {
+        Unselect = unselectHandler;
         Map = map;
         map.Tile(transform.position).Unit = this;
         Area = Spawner.Spawn(AreaPrefab, Vector3.zero, Quaternion.identity);
@@ -48,25 +51,42 @@ public class UnitController : MonoBehaviour
     {
         var clickPos = MyInput.GroundPosition(Map.Settings.Plane());
         var tile = Map.Tile(clickPos);
-        if (tile != null && tile.Vacant && tile.Empty)
+        if (tile != null && tile.Vacant && tile.Empty && tile.Weight != float.MaxValue)
         {
-            tile.Unit = this;
-            Map.Tile(transform.position).Unit = null;
             AreaHide();
             Path.IsEnabled = false;
             PathHide();
             var path = Map.PathTiles(transform.position, clickPos, Range);
+
+            if (path.Any())
+            {
+                path.Last().Unit = this;
+                Map.Tile(transform.position).Unit = null;
+            }
+
             Move(path, () =>
             {
                 Path.IsEnabled = true;
                 AreaShow();
             });
+        } else
+        {
+            // Makes sure the unit is unselected at the end of the turn, so that the rest of the code doesn't consider
+            // that no unit was selected
+            StartCoroutine(RunAtEndOfFrame(() =>
+            {
+                isSelected = false;
+                AreaHide();
+                Path.IsEnabled = false;
+                PathHide();
+                Unselect();
+            }));
         }
     }
 
     public void Move(List<TileEntity> path, Action onCompleted)
     {
-        if (path != null)
+        if (path != null && path.Any())
         {
             if (MovingCoroutine != null)
             {
@@ -164,9 +184,20 @@ public class UnitController : MonoBehaviour
 
     public void Select()
     {
-        isSelected = true;
-        Path.IsEnabled = true;
-        PathUpdate();
-        AreaShow();
+        // Make sure we don't update in the frame the unit get selected
+        StartCoroutine(RunAtEndOfFrame(() =>
+        {
+            isSelected = true;
+            Path.IsEnabled = true;
+            PathUpdate();
+            AreaShow();
+        }));
+        
+    }
+
+    IEnumerator RunAtEndOfFrame(Action toRun)
+    {
+        yield return new WaitForEndOfFrame();
+        toRun();
     }
 }

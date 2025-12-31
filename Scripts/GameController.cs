@@ -42,7 +42,7 @@ public class GameController : MonoBehaviour
         allUnits = FindObjectsOfType<UnitController>();
 #endif
 
-        Array.ForEach(allUnits, unit => unit.Init(MapEntity));
+        Array.ForEach(allUnits, unit => unit.Init(MapEntity, () => { Unit = null; }));
     }
 
     void Update()
@@ -64,11 +64,15 @@ public class GameController : MonoBehaviour
         var tile = MapEntity.Tile(clickPos);
         if (tile != null && tile.Vacant)
         {
-            if (tile.Empty && Unit == null)
+            if (Unit != null)
+            {
+                // handling click when a unit is selected is UnitController's job
+            } else if (tile.Empty)
             {
                 // select tile
-            } else if (!tile.Empty)
+            } else
             {
+                // select unit
                 Unit = tile.Unit;
                 Unit.Select();
             }
