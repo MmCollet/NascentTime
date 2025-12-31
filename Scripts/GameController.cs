@@ -9,6 +9,7 @@ public class GameController : MonoBehaviour
     public KeyCode GridToggle = KeyCode.G;
     public MapView MapView;
     public UnitController Unit;
+    public TileEntity SelectedTile;
 
     public MapEntity MapEntity { get; private set; }
 
@@ -70,12 +71,28 @@ public class GameController : MonoBehaviour
             } else if (tile.Empty)
             {
                 // select tile
+                if (SelectedTile == null)
+                {
+                    SelectTile(tile);
+                } else // unselect tile
+                {
+                    SelectTile(null);
+                }
             } else
             {
                 // select unit
                 Unit = tile.Unit;
                 Unit.Select();
             }
+        } else
+        {
+            // unselect tile
+            SelectTile(null);
         }
+    }
+
+    void SelectTile(TileEntity tile)
+    {
+        SelectedTile = tile;
     }
 }
