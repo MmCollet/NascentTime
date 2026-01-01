@@ -9,9 +9,12 @@ public class GameController : MonoBehaviour
     public KeyCode GridToggle = KeyCode.G;
     public MapView MapView;
     public UnitController Unit;
-    public TileEntity SelectedTile;
+    public GameObject TileHighlighterPrefab;
 
     public MapEntity MapEntity { get; private set; }
+
+    GameObject tileHighlighter;
+    TileEntity SelectedTile = null;
 
     void Start()
     {
@@ -44,6 +47,17 @@ public class GameController : MonoBehaviour
 #endif
 
         Array.ForEach(allUnits, unit => unit.Init(MapEntity, () => { Unit = null; }));
+
+        if (TileHighlighterPrefab)
+        {
+            tileHighlighter = Instantiate(TileHighlighterPrefab);
+            tileHighlighter.SetActive(false);
+        } else
+        {
+            Debug.Log("No tile highlighter assigned");
+        }
+        
+
     }
 
     void Update()
@@ -80,6 +94,9 @@ public class GameController : MonoBehaviour
                 }
             } else
             {
+                // unselect tile
+                SelectTile(null);
+
                 // select unit
                 Unit = tile.Unit;
                 Unit.Select();
@@ -94,5 +111,16 @@ public class GameController : MonoBehaviour
     void SelectTile(TileEntity tile)
     {
         SelectedTile = tile;
+
+        if (tile != null)
+        {
+            tileHighlighter?.SetActive(true);
+            Vector3 position = MapEntity.WorldPosition(tile.Position);
+            Vector3 positionWorld = new (position.x, 0.1f, position.z);
+            tileHighlighter.transform.position = positionWorld;
+        } else
+        {
+            tileHighlighter?.SetActive(false);
+        }
     }
 }
