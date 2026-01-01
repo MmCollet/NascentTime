@@ -31,7 +31,7 @@ MonoBehaviour:
     Id: f17cb06c20171e24e87cce009526b4e7
     MapColor: {r: 0.16396712, g: 0.8867924, b: 0, a: 0.5}
     Prefab: {fileID: 0}
-    GridOffset: 0
+    GridOffset: -0.1
     Tags: []
     Prefabs:
     - {fileID: 1272180480792470, guid: 5613daba6fc22a44eb455d3d63776789, type: 3}
@@ -39,7 +39,7 @@ MonoBehaviour:
     Id: d594c5141a1f6b3478d828b8f11f6071
     MapColor: {r: 0, g: 0.32397842, b: 1, a: 0.5}
     Prefab: {fileID: 0}
-    GridOffset: -0.1
+    GridOffset: -0.2
     Tags:
     - {fileID: 11400000, guid: eae3ad36be0ce944da97962d9a5c1c63, type: 2}
     Prefabs:
@@ -48,7 +48,7 @@ MonoBehaviour:
     Id: c92f7d6d64a5a5c46977a430297cae9a
     MapColor: {r: 0, g: 0.19999999, b: 0.020905685, a: 0.5}
     Prefab: {fileID: 0}
-    GridOffset: 0
+    GridOffset: -0.1
     Tags:
     - {fileID: 11400000, guid: c2334a813f8efe1488daced775fd0033, type: 2}
     Prefabs:
@@ -66,7 +66,7 @@ MonoBehaviour:
     Id: 51652a9e1479bc348b06fb1d0994a69b
     MapColor: {r: 0.3509434, g: 0.33041653, b: 0.33041653, a: 0.5}
     Prefab: {fileID: 0}
-    GridOffset: 0
+    GridOffset: 0.2
     Tags:
     - {fileID: 11400000, guid: 25b8c40cae2c9684985e9ebdc6331b8e, type: 2}
     Prefabs:
@@ -75,7 +75,7 @@ MonoBehaviour:
     Id: fdd4ca77ef757524ba9f3d5332055408
     MapColor: {r: 0, g: 0.09883146, b: 0.4264151, a: 0.5}
     Prefab: {fileID: 0}
-    GridOffset: 0
+    GridOffset: -0.2
     Tags:
     - {fileID: 11400000, guid: eae3ad36be0ce944da97962d9a5c1c63, type: 2}
     Prefabs:
