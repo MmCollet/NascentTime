@@ -4,13 +4,11 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     float angle = 15;
-    float mapHeight;
     float zoomFactor = 1;
     float zoomSpeed = 0.05f;
     float minCameraHeight = 5;
     float maxCameraHeight = 20;
     float cameraMoveSpeed = 1; // Could be replaced by an exponential speed
-    float dragSpeed = 0.02f;
     Vector3 dragStartWorld;
     Vector3 dragStartCameraPos;
     Plane plane;
