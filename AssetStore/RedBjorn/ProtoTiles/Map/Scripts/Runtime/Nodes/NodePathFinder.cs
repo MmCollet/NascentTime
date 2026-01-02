@@ -10,13 +10,6 @@ namespace RedBjorn.ProtoTiles
 {
     public class NodePathFinder
     {
-        static List<INode> path = new List<INode>();
-        static int pathVersion = 0;
-
-        static Dictionary<INode, float> ScoreG = new Dictionary<INode, float>();
-        static Dictionary<INode, float> ScoreF = new Dictionary<INode, float>();
-        static Dictionary<INode, INode> CameFrom = new Dictionary<INode, INode>();
-
         public static HashSet<INode> AccessibleArea(IMapNode map, INode origin)
         {
             map.Reset();
@@ -156,8 +149,8 @@ namespace RedBjorn.ProtoTiles
             {
                 return null;
             }
-            // var fullPath = FindPath(map, start, finish);
-            return TrimPath(map, path, range);
+            var fullPath = FindPath(map, start, finish);
+            return TrimPath(map, fullPath, range);
         }
 
         public static List<INode> Path(IMapNode map, INode start, INode finish)
@@ -166,23 +159,7 @@ namespace RedBjorn.ProtoTiles
             {
                 return null;
             }
-            return path; //FindPath(map, start, finish);
-        }
-
-        public static void ComputeNewPath(IMapNode map, INode start, INode finish)
-        {
-            int myVersion = Interlocked.Increment(ref pathVersion);
-
-            Task.Run(() =>
-            {
-                var result = FindPath(map, start, finish);
-
-                // Only the latest path may publish
-                if (myVersion == Volatile.Read(ref pathVersion))
-                {
-                    path = result;
-                }
-            });
+            return FindPath(map, start, finish);
         }
 
         static List<INode> FindPath(IMapNode map, INode start, INode finish)

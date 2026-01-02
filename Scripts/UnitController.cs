@@ -24,6 +24,7 @@ public class UnitController : MonoBehaviour
     Coroutine MovingCoroutine;
     Action Unselect;
     TileEntity PreviousTile;
+    List<Vector3> LastComputedPath;
 
     void Update()
     {
@@ -67,8 +68,6 @@ public class UnitController : MonoBehaviour
 
             Move(path, () =>
             {
-                var pos = Map.Tile(transform.position);
-                NodePathFinder.ComputeNewPath(Map, pos, pos);
                 Path.IsEnabled = true;
                 AreaShow();
             });
@@ -170,15 +169,15 @@ public class UnitController : MonoBehaviour
         if (Path && Path.IsEnabled)
         {
             var tile = Map.Tile(MyInput.GroundPosition(Map.Settings.Plane()));
-            if (PreviousTile != tile)
-            {
-                NodePathFinder.ComputeNewPath(Map, Map.Tile(transform.position), tile);
-            }
 
             if (tile != null && tile.Vacant && tile.Weight != float.MaxValue)
             {
-                var path = Map.PathPoints(transform.position, Map.WorldPosition(tile.Position), Range);
-                Path.Show(path, Map);
+                if (PreviousTile != tile)
+                {
+                    LastComputedPath = Map.PathPoints(transform.position, Map.WorldPosition(tile.Position), Range);
+                    PreviousTile = tile;
+                }
+                Path.Show(LastComputedPath, Map);
                 Path.ActiveState();
                 Area.ActiveState();
             }
@@ -187,8 +186,6 @@ public class UnitController : MonoBehaviour
                 Path.InactiveState();
                 Area.InactiveState();
             }
-
-            PreviousTile = tile;
         }
     }
 

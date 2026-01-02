@@ -55,6 +55,9 @@ namespace RedBjorn.ProtoTiles.Example
                     }
 
                     Line.Show(pointsXY);
+
+                    // Put correct tail back in input list
+                    points[points.Count - 1] = tailPos;
                 }
             }
         }
