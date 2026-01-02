@@ -68,6 +68,9 @@ public class UnitController : MonoBehaviour
 
             Move(path, () =>
             {
+                var tile = Map.Tile(transform.position);
+                PreviousTile = tile;
+                LastComputedPath = Map.PathPoints(transform.position, Map.WorldPosition(tile.Position), Range);
                 Path.IsEnabled = true;
                 AreaShow();
             });
