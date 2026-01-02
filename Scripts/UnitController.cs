@@ -62,8 +62,8 @@ public class UnitController : MonoBehaviour
 
             if (path.Any())
             {
-                path.Last().Unit = this;
                 Map.Tile(transform.position).Unit = null;
+                path.Last().Unit = this;
             }
 
             Move(path, () =>
