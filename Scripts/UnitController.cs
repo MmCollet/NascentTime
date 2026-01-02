@@ -6,7 +6,6 @@ using RedBjorn.ProtoTiles;
 using RedBjorn.ProtoTiles.Example;
 using RedBjorn.Utils;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class UnitController : MonoBehaviour
 {
@@ -68,6 +67,8 @@ public class UnitController : MonoBehaviour
 
             Move(path, () =>
             {
+                var pos = Map.Tile(transform.position);
+                NodePathFinder.ComputeNewPath(Map, pos, pos);
                 Path.IsEnabled = true;
                 AreaShow();
             });
