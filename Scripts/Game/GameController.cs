@@ -10,8 +10,8 @@ public class GameController : MonoBehaviour
     public MapView MapView;
     public UnitController Unit;
     public GameObject TileHighlighterPrefab;
-
     public MapEntity MapEntity { get; private set; }
+    public Leader Player;
 
     GameObject tileHighlighter;
     TileEntity SelectedTile = null;
@@ -57,7 +57,7 @@ public class GameController : MonoBehaviour
             Debug.Log("No tile highlighter assigned");
         }
         
-
+        Player = new Leader(Color.violet, "My Country");
     }
 
     void Update()
