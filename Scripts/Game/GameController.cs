@@ -13,7 +13,7 @@ public class GameController : MonoBehaviour
     public MapEntity MapEntity { get; private set; }
     public Leader Player;
 
-    GameObject tileHighlighter;
+    GameObject TileHighlighter;
     TileEntity SelectedTile = null;
 
     void Start()
@@ -50,8 +50,8 @@ public class GameController : MonoBehaviour
 
         if (TileHighlighterPrefab)
         {
-            tileHighlighter = Instantiate(TileHighlighterPrefab);
-            tileHighlighter.SetActive(false);
+            TileHighlighter = Instantiate(TileHighlighterPrefab);
+            TileHighlighter.SetActive(false);
         } else
         {
             Debug.Log("No tile highlighter assigned");
@@ -114,13 +114,20 @@ public class GameController : MonoBehaviour
 
         if (tile != null)
         {
-            tileHighlighter?.SetActive(true);
+            TileHighlighter?.SetActive(true);
             Vector3 position = MapEntity.WorldPosition(tile.Position);
             Vector3 positionWorld = new (position.x, 0.1f, position.z);
-            tileHighlighter.transform.position = positionWorld;
+            TileHighlighter.transform.position = positionWorld;
         } else
         {
-            tileHighlighter?.SetActive(false);
+            TileHighlighter?.SetActive(false);
         }
+    }
+
+    public void NewTurn()
+    {
+        Unit = null;
+        SelectedTile = null;
+        Player.NewTurn();
     }
 }

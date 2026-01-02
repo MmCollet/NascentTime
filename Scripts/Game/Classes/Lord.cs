@@ -7,7 +7,7 @@ public class Lord : Knight
 
     public override void NewTurn()
     {
+        KnightVassals?.ForEach(knight => knight.NewTurn());
         base.NewTurn();
-        Debug.Log("New Turn Lord");
     }
 }

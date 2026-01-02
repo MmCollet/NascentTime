@@ -16,8 +16,8 @@ public class UnitController : MonoBehaviour
     public PathDrawer PathPrefab;
 
 
-    float mobility = 10f;
-    bool isSelected = false;
+    float Mobility = 10f;
+    bool IsSelected = false;
     MapEntity Map;
     AreaOutline Area;
     PathDrawer Path;
@@ -28,7 +28,7 @@ public class UnitController : MonoBehaviour
 
     void Update()
     {
-        if (isSelected)
+        if (IsSelected)
         {
             if (MyInput.GetOnWorldUp(Map.Settings.Plane()))
             {
@@ -80,7 +80,7 @@ public class UnitController : MonoBehaviour
             // that no unit was selected
             StartCoroutine(RunAtEndOfFrame(() =>
             {
-                isSelected = false;
+                IsSelected = false;
                 AreaHide();
                 Path.IsEnabled = false;
                 PathHide();
@@ -197,15 +197,26 @@ public class UnitController : MonoBehaviour
         // Make sure we don't update in the frame the unit get selected
         StartCoroutine(RunAtEndOfFrame(() =>
         {
-            isSelected = true;
+            IsSelected = true;
             PreviousTile = null;
             Path.IsEnabled = true;
             PathUpdate();
             AreaShow();
         }));
-        
     }
 
+    public void NewTurn()
+    {
+        if (IsSelected)
+        {
+            IsSelected = false;
+            AreaHide();
+            Path.IsEnabled = false;
+            PathHide();
+        }
+
+        Range = Mobility;
+    }
     IEnumerator RunAtEndOfFrame(Action toRun)
     {
         yield return new WaitForEndOfFrame();

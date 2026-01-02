@@ -15,8 +15,8 @@ public class Leader : Duke
 
     public override void NewTurn()
     {
+        DukeVassals?.ForEach(duke => duke.NewTurn());
         base.NewTurn();
-        Debug.Log("New Turn Leader");
     }
 
     public Color Color()

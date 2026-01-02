@@ -7,6 +7,6 @@ public class Knight
 
     public virtual void NewTurn()
     {
-        Debug.Log("New Turn Knight");
+        Units.ForEach(unit => unit.NewTurn());
     }
 }
