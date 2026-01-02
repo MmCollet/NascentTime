@@ -7,6 +7,6 @@ public class Knight
 
     public virtual void NewTurn()
     {
-        Units.ForEach(unit => unit.NewTurn());
+        Units?.ForEach(unit => unit.NewTurn());
     }
 }

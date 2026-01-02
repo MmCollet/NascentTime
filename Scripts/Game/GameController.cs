@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using RedBjorn.ProtoTiles;
 using RedBjorn.ProtoTiles.Example;
 using UnityEngine;
@@ -58,6 +59,7 @@ public class GameController : MonoBehaviour
         }
         
         Player = new Leader(Color.violet, "My Country");
+        Player.Units = new List<UnitController> (allUnits);
     }
 
     void Update()
