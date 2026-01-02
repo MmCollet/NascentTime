@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace RedBjorn.ProtoTiles
 {
@@ -133,14 +134,18 @@ namespace RedBjorn.ProtoTiles
 
                 using var enumerator = reachable.GetEnumerator();
                 open.Clear();
+                var keysToRemove = new List<int>();
+
                 while (enumerator.MoveNext())
                 {
                     var smallestKey = enumerator.Current.Key;
                     open = enumerator.Current.Value;
                     open.RemoveAll(n => Mathf.CeilToInt(n.Depth) != smallestKey);
-                    reachable.Remove(smallestKey);
+                    keysToRemove.Add(smallestKey);
                     if (open.Any()) break;
                 }
+
+                keysToRemove.ForEach(key => reachable.Remove(key));
             }
             return closed;
         }
