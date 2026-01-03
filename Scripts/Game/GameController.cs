@@ -16,6 +16,7 @@ public class GameController : MonoBehaviour
 
     GameObject TileHighlighter;
     TileEntity SelectedTile = null;
+    UnitActionPannelScript UnitActionPannel;
 
     void Start()
     {
@@ -39,6 +40,8 @@ public class GameController : MonoBehaviour
 
         FindFirstObjectByType<CameraController>().Init(Map);
 
+        UnitActionPannel = FindFirstObjectByType<UnitActionPannelScript>(FindObjectsInactive.Include);
+
         UnitController[] allUnits = new UnitController[0];
 
 #if UNITY_2023_1_OR_NEWER
@@ -47,7 +50,8 @@ public class GameController : MonoBehaviour
         allUnits = FindObjectsOfType<UnitController>();
 #endif
 
-        Array.ForEach(allUnits, unit => unit.Init(MapEntity, () => { Unit = null; }));
+        Player = new Leader(Color.violet, "My Country");
+        Array.ForEach(allUnits, unit => unit.Init(MapEntity, Player, () => { Unit = null; UnitActionPannel.Show(false); }));
 
         if (TileHighlighterPrefab)
         {
@@ -58,7 +62,6 @@ public class GameController : MonoBehaviour
             Debug.Log("No tile highlighter assigned");
         }
         
-        Player = new Leader(Color.violet, "My Country");
         Player.Units = new List<UnitController> (allUnits);
     }
 
@@ -102,6 +105,7 @@ public class GameController : MonoBehaviour
                 // select unit
                 Unit = tile.Unit;
                 Unit.Select();
+                UnitActionPannel.Show(true);
             }
         } else
         {
@@ -129,6 +133,7 @@ public class GameController : MonoBehaviour
     public void NewTurn()
     {
         Unit = null;
+        UnitActionPannel.Show(false);
         SelectedTile = null;
         Player.NewTurn();
     }

@@ -11,9 +11,14 @@ public class UnitController : MonoBehaviour
 {
     public float Speed = 5;
     public float Range = 10f;
+    public string Name = "Population";
+    public int Health = 100;
+    public int MaxHealth = 100;
+    public int Attack = 0;
     public Transform RotationNode;
     public AreaOutline AreaPrefab;
     public PathDrawer PathPrefab;
+    public Leader Leader;
 
 
     float Mobility = 10f;
@@ -38,11 +43,12 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    public void Init(MapEntity map, Action unselectHandler)
+    public void Init(MapEntity map, Leader leader, Action unselectHandler)
     {
         Unselect = unselectHandler;
         Map = map;
         map.Tile(transform.position).Unit = this;
+        Leader = leader;
         Area = Spawner.Spawn(AreaPrefab, Vector3.zero, Quaternion.identity);
         PathCreate();
         Path.IsEnabled = false;
